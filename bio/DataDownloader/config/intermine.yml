@@ -57,7 +57,7 @@ UniProt:
         - 31234
         - 135651
         - 281687
-     excluded_organisms:
+    excluded_organisms:
         - 10091
         - 10092
         - 35531
