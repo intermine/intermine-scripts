@@ -1,7 +1,7 @@
 package DataDownloader::Source::FlyAnatomyOntology;
 
 use Moose;
-extends 'DataDownloader::Source::ABC';
+extends 'DataDownloader::Source::FtpBase';
 
 use constant {
     TITLE  => 'Fly Anatomy Ontology',
@@ -9,9 +9,15 @@ use constant {
     SOURCE_LINK => "http://www.flybase.net/",
     SOURCE_DIR => 'ontologies/fly-anatomy',
     SOURCES => [{
-        FILE   => 'fbbt.obo',
-        SERVER => 'http://svn.code.sf.net/p/fbbtdv/code/fbbt/releases',
+        SUBTITLE => 'Fly Anatomy',
+        FILE   => 'fly_anatomy.obo.gz',
+        HOST => 'ftp.flybase.net',
+        REMOTE_DIR => "releases/current/precomputed_files/ontologies",
+        EXTRACT => 1,
     }],
 };
 
 1;
+
+
+
