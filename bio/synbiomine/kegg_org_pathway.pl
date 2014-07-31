@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
@@ -12,10 +12,71 @@ binmode(STDOUT, 'utf8');
 # Silence warnings when printing null fields
 no warnings ('uninitialized');
 
-my $usage = "usage: $0 file_of_organism_code output_directory_path
+=head1 NAME
+
+kegg_org_pathway.pl - Service for retrieving organism-specific gene to pathway mappings 
+from the KEGG PATHWAY database using the KEGG's web service
+
+=head1 SYNOPSIS
+
+  usage: kegg_org_pathway [-v|-h] file_of_organism_codes [optional: output_directory_path]
+
+  options: 
+    -v (verbose) : helpful messaging for debug purposes
+    -h (help)    : shows usage
+
+  input: file_of_organism_codes (plain text - one code per line): 
+
+      KEGG organism_codes: 3-4 letter organism codes used by KEGG e.g. 
+      eco
+      bsu
+      hsa
+
+  [optional: output dir    If not specified, defaults to current dir]
+
+  output: writes a file of gene to pathway mappings for each organism
+  specified in the input file. Filename is [code]_gene_map.tab.
+  File format is:
+    gene_id\tpathway1, p2, p3 etc.
+
+  B<NOTE:> KEGG imposes restrictions on download and use by non-academic groups: 
+    I<KEGG API is provided for academic use by academic users belonging to>
+    I<academic institutions. This service should not be used for bulk data downloads.> 
+
+    For more information, see: http://www.kegg.jp/kegg/rest/
+
+=head1 AUTHOR
+
+Mike Lyne C<< <dev@intermine.org> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to C<dev@intermine.org>.
+
+=head1 SUPPORT
+
+You can find documentation for this script with the perldoc command.
+
+    perldoc kegg_org_pathway.pl
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2006 - 2014 FlyMine, all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=head1 FUNCTIONS
+
+=cut
+
+my $usage = "usage: $0 file_of_organism_codes output_directory_path
 
 organism_codes:\t3-4 letter organism codes used by KEGG
-e.g. eco\te. coli
+e.g.
+  eco
+  bsu
+  hsa
 
 -v\tverbose output
 
@@ -99,11 +160,11 @@ sub process_kegg {
                keys %gene2path;
 
   for my $key (@sorted) {
-
-#  for my $key (sort { $gene2path {$a} <=> $gene2path {$b} } keys %gene2path) {
     say OUT_FILE $key, "\t", join(" ",  @{ $gene2path{$key} } );
   }
   say "Finished $org\n" if ($verbose);
   close (OUT_FILE);
 
 }
+
+__END__
