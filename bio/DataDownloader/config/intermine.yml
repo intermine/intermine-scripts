@@ -1,14 +1,12 @@
-log_dir: "/micklem/data/download_logs"
+log_dir: "/tmp"
 data_dir: "/micklem/data"
 
 default_sources:
   - "BioGRID"
-  - "EnsemblCompara"
   - "FlyAnatomyOntology"
   - "FlyBaseFasta"
   - "FlyBaseOrthologues"
   - "FlyCVTerms"
-  - "FlyDevelopmentOntology"
   - "GOAnnotation"
   - "IntAct"
   - "IntActVocabulary"
@@ -22,7 +20,6 @@ default_sources:
   - "RedFly"
   - "RGDIdentifiers"
   - "UniProt"
-  - "WormIdentifiers"
   - "HomoloGene"
   - "OrthoDB"
   - "SGDIdentifiers"
@@ -30,6 +27,15 @@ default_sources:
   - "MousePheno"
   - "HumanGeneIdentifiers"
   - "HPO"
+  - "NCBIFasta"
+  - "NCBIGff"
+  - "ClinVar"
+  - "IntActComplexes"
+  - "HGNC"
+  - "NCBIGeneHuman"
+  - "Orphanet"
+  - "DO"
+  - "FlyBaseAlleles"
 
 UniProt:
     organisms:
