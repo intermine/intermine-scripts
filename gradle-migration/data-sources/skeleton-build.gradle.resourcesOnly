@@ -1,0 +1,10 @@
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['resources']
+        }
+    }
+}
+
+dependencies {
+}
