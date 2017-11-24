@@ -95,6 +95,9 @@ cd $prj
     fi
   fi
 
+  # move project.properties to uniprot.properties
+  git mv project.properties $prj.properties
+
 cd ..
 
 done
