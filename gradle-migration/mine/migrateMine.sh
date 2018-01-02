@@ -27,14 +27,6 @@ cd $MINE_PATH
     updateProjectStructure dbmodel
   fi
 
-  if [ -d integrate ]; then
-    updateProjectStructure integrate
-  fi
- 
-  if [ -d postprocess ]; then
-    updateProjectStructure postprocess
-  fi
-
   if [ -d webapp ]; then
     updateProjectStructure webapp
     if [ -d resources/webapp]; then

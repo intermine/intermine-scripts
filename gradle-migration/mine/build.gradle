@@ -22,9 +22,5 @@ subprojects {
 }
 
 ext {
-  imVersion = "2.0.0-SNAPSHOT"
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.1'
+  imVersion = "2.+"
 }
