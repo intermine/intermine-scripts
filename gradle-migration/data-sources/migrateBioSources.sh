@@ -1,5 +1,7 @@
 #!/bin/bash
-for dir in `ls -d */`
+currentDir=`pwd`
+cd $1
+for dir in `ls $bioSourcesDir -d */`
 do
 prj="${dir%%/}"
 
@@ -41,7 +43,7 @@ cd $prj
 
   if [ -f src/main/resources/.gitignore ]
   then
-    git rm src/main/resources/.gitignore
+    git rm -f src/main/resources/.gitignore
     echo "Removed resources/.gitignore "
   fi 
 
@@ -55,12 +57,12 @@ cd $prj
   # keep main project properties file for now
   if [ -f src/main/project.properties ]
   then
-    git rm src/main/project.properties
+    git rm -f src/main/project.properties
     echo "Removed main/project.properties "
   fi 
   if [ -f src/test/project.properties ]
   then
-    git rm src/test/project.properties
+    git rm -f src/test/project.properties
     echo "Removed test/project.properties "
   fi 
   
@@ -72,10 +74,10 @@ cd $prj
     # determined by the presence of the /resources directory
     if [ -d resources ]
     then
-      cp ../skeleton-build.gradle.resourcesOnly build.gradle
+      cp $currentDir/skeleton-build.gradle.resourcesOnly build.gradle
       echo "Created a build.gradle skeleton"
     else
-      cp ../skeleton-build.gradle build.gradle
+      cp $currentDir/skeleton-build.gradle build.gradle
       echo "Created a build.gradle skeleton"
     fi
   fi
