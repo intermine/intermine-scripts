@@ -1,4 +1,5 @@
 #!/bin/bash
+# this script is only used to update the build.gradle files when they are already created
 for dir in `ls -d */`
 do
 prj="${dir%%/}"
