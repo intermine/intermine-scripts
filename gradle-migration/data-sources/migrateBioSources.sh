@@ -49,7 +49,7 @@ cd $prj
 
   if [ -f build.xml ]
   then
-    git rm build.xml
+    git rm -f build.xml
     echo "Removed build.xml "
   fi 
 
@@ -76,9 +76,14 @@ cd $prj
     then
       cp $currentDir/skeleton-build.gradle.resourcesOnly build.gradle
       echo "Created a build.gradle skeleton"
-    else
+    elif [ -d src ]
+    then
       cp $currentDir/skeleton-build.gradle build.gradle
       echo "Created a build.gradle skeleton"
+    else
+      echo "$prj is not a bio-source"
+      cd ..
+      continue
     fi
   fi
 
@@ -98,7 +103,10 @@ cd $prj
   fi
 
   # move project.properties to uniprot.properties
-  git mv project.properties $prj.properties
+  if [ -f project.properties ]
+  then
+    git mv project.properties $prj.properties
+  fi
 
 cd ..
 
