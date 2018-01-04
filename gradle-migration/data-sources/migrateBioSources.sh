@@ -1,10 +1,32 @@
 #!/bin/bash
 currentDir=`pwd`
 cd $1
+## create the root build.gradle
+if [ ! -f build.gradle ]
+then   
+  cp $currentDir/skeleton-build.gradle.root build.gradle
+  echo "Created the build.gradle for the gradle multi-project"
+fi
+## create the settings.gradle
+if [ ! -f settings.gradle ]
+then   
+  cp $currentDir/skeleton-settings.gradle settings.gradle
+  echo "Created the settings.gradle for the gradle multi-project"
+fi
+## copy grdale wrapper
+if [ ! -d gradle ]
+then
+  cp -r $currentDir/gradle-wrapper/* .
+  echo "Copied the gradle wrapper"
+fi
+
+## migrate the bio sources located in the directory given in input
 for dir in `ls $bioSourcesDir -d */`
 do
 prj="${dir%%/}"
 
+if [ "$prj" != "gradle" ]
+then
 cd $prj
   echo ""
   echo "########################################################"
@@ -109,5 +131,5 @@ cd $prj
   fi
 
 cd ..
-
+fi
 done
