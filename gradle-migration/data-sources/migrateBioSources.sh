@@ -13,7 +13,7 @@ then
   cp $currentDir/skeleton-settings.gradle settings.gradle
   echo "Created the settings.gradle for the gradle multi-project"
 fi
-## copy grdale wrapper
+## copy gradle wrapper
 if [ ! -d gradle ]
 then
   cp -r $currentDir/gradle-wrapper/* .
@@ -73,7 +73,11 @@ cd $prj
   then
     git rm -f build.xml
     echo "Removed build.xml "
-  fi 
+  fi
+  for buildFileToRemove in `find . -name "build.xml"`
+  do
+    git rm -f $buildFileToRemove
+  done 
 
   # remove project properties files, they are pointless
   # keep main project properties file for now
