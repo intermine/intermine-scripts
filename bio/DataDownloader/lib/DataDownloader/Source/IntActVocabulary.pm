@@ -14,7 +14,7 @@ use constant {
     SOURCES => [
         {
             FILE   => "psi-mi.obo",
-            SERVER =>  "http://obo.cvs.sourceforge.net/*checkout*/obo/obo/ontology/genomic-proteomic/protein",
+            SERVER =>  "https://raw.githubusercontent.com/HUPO-PSI/psi-mi-CV/master/",
         }
     ],
 };
