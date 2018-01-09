@@ -1,8 +1,32 @@
 #!/bin/bash
-for dir in `ls -d */`
+currentDir=`pwd`
+cd $1
+## create the root build.gradle
+if [ ! -f build.gradle ]
+then   
+  cp $currentDir/skeleton-build.gradle.root build.gradle
+  echo "Created the build.gradle for the gradle multi-project"
+fi
+## create the settings.gradle
+if [ ! -f settings.gradle ]
+then   
+  cp $currentDir/skeleton-settings.gradle settings.gradle
+  echo "Created the settings.gradle for the gradle multi-project"
+fi
+## copy gradle wrapper
+if [ ! -d gradle ]
+then
+  cp -r $currentDir/gradle-wrapper/* .
+  echo "Copied the gradle wrapper"
+fi
+
+## migrate the bio sources located in the directory given in input
+for dir in `ls $bioSourcesDir -d */`
 do
 prj="${dir%%/}"
 
+if [ "$prj" != "gradle" ]
+then
 cd $prj
   echo ""
   echo "########################################################"
@@ -41,26 +65,30 @@ cd $prj
 
   if [ -f src/main/resources/.gitignore ]
   then
-    git rm src/main/resources/.gitignore
+    git rm -f src/main/resources/.gitignore
     echo "Removed resources/.gitignore "
   fi 
 
   if [ -f build.xml ]
   then
-    git rm build.xml
+    git rm -f build.xml
     echo "Removed build.xml "
-  fi 
+  fi
+  for buildFileToRemove in `find . -name "build.xml"`
+  do
+    git rm -f $buildFileToRemove
+  done 
 
   # remove project properties files, they are pointless
   # keep main project properties file for now
   if [ -f src/main/project.properties ]
   then
-    git rm src/main/project.properties
+    git rm -f src/main/project.properties
     echo "Removed main/project.properties "
   fi 
   if [ -f src/test/project.properties ]
   then
-    git rm src/test/project.properties
+    git rm -f src/test/project.properties
     echo "Removed test/project.properties "
   fi 
   
@@ -72,11 +100,16 @@ cd $prj
     # determined by the presence of the /resources directory
     if [ -d resources ]
     then
-      cp ../skeleton-build.gradle.resourcesOnly build.gradle
+      cp $currentDir/skeleton-build.gradle.resourcesOnly build.gradle
+      echo "Created a build.gradle skeleton"
+    elif [ -d src ]
+    then
+      cp $currentDir/skeleton-build.gradle build.gradle
       echo "Created a build.gradle skeleton"
     else
-      cp ../skeleton-build.gradle build.gradle
-      echo "Created a build.gradle skeleton"
+      echo "$prj is not a bio-source"
+      cd ..
+      continue
     fi
   fi
 
@@ -96,8 +129,11 @@ cd $prj
   fi
 
   # move project.properties to uniprot.properties
-  git mv project.properties $prj.properties
+  if [ -f project.properties ]
+  then
+    git mv project.properties $prj.properties
+  fi
 
 cd ..
-
+fi
 done
