@@ -1,26 +1,26 @@
 #!/bin/bash
 currentDir=`pwd`
 cd $1
-## create the root build.gradle
+# create the build.gradle in the root project
 if [ ! -f build.gradle ]
 then   
   cp $currentDir/skeleton-build.gradle.root build.gradle
   echo "Created the build.gradle for the gradle multi-project"
 fi
-## create the settings.gradle
+# create the settings.gradle
 if [ ! -f settings.gradle ]
 then   
   cp $currentDir/skeleton-settings.gradle settings.gradle
   echo "Created the settings.gradle for the gradle multi-project"
 fi
-## copy gradle wrapper
+# copy gradle wrapper
 if [ ! -d gradle ]
 then
   cp -r $currentDir/gradle-wrapper/* .
   echo "Copied the gradle wrapper"
 fi
 
-## migrate the bio sources located in the directory given in input
+# migrate the bio sources located in the directory given in input
 for dir in `ls $bioSourcesDir -d */`
 do
 prj="${dir%%/}"
@@ -33,6 +33,16 @@ cd $prj
   echo "processing $prj"
   echo "########################################################"
   echo ""
+
+  # converting the project layout to be aligned with the standard gradle layout
+  # src
+  # ---main
+  # -------java
+  # -------resources
+  # ---test
+  # -------java
+  # -------resources
+
   if [ -d main ]
   then
     cd $prj
@@ -69,15 +79,30 @@ cd $prj
     echo "Removed resources/.gitignore "
   fi 
 
+  # remove main build.xml
   if [ -f build.xml ]
   then
     git rm -f build.xml
     echo "Removed build.xml "
   fi
+  # remove all build.xml
   for buildFileToRemove in `find . -name "build.xml"`
   do
     git rm -f $buildFileToRemove
-  done 
+  done
+  # removed all eclipse files
+  if [ -f .classpath ]
+  then
+    git rm -f .classpath
+  fi
+  if [ -f .checkstyle ]
+  then
+    git rm -f .checkstyle
+  fi
+  if [ -f .project ]
+  then
+    git rm -f .project
+  fi
 
   # remove project properties files, they are pointless
   # keep main project properties file for now
@@ -128,7 +153,7 @@ cd $prj
     fi
   fi
 
-  # move project.properties to uniprot.properties
+  # move the main project.properties to uniprot.properties
   if [ -f project.properties ]
   then
     git mv project.properties $prj.properties
