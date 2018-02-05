@@ -18,7 +18,7 @@ updateProjectStructure()
 
   if [ ! -f build.gradle ]; then
     echo "Copying gradle build file"
-    wget "https://raw.githubusercontent.com/intermine/biotestmine/master/$1/build.gradle"
+    "${1}-build.gradle" "build.gradle"
   fi
   cd ..
 }
