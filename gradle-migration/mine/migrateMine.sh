@@ -68,16 +68,21 @@ cd $MINE_PATH
 
     if [ -d resources ]; then
       echo "mv resources to src/main/resources"
+
       git mv resources src/main/resources
-      #mv resources with struts xml file under src/main/resourcces TODO!!!
-      #git mv src/main/resources/web.properties src/main/webapp/WEB-INF/
+      git mv src/main/resources/web.properties src/main/webapp/WEB-INF/
     fi
 
     cd ..
   fi
-  #if [ -d postprocess ]; then
-    # TODO
-  #fi
+  if [ -d postprocess ]; then
+    cd postprocess
+    if [ -d resources ]; then
+      git mv resources/* dbmodel/src/main/resources
+    fi
+    cd ..
+    rm -rf postprocess
+  fi
 
 echo "Creating settings and build gradle files"
 cp "${SCRIPT_PATH}/build.gradle" .
