@@ -31,7 +31,7 @@ configurations {
 }
 
 dependencies { 
-  compile project(":dbmodel")
+  compile (project(":dbmodel")) {transitive = false}
   compile group: "org.intermine", name: "intermine-resources", version: imVersion
   compile group: "org.intermine", name: "intermine-testresources", version: imVersion
   compile group: "org.intermine", name: "bio-webapp", version: imVersion, classifier: "classes"
