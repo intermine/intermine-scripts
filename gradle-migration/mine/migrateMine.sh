@@ -85,7 +85,7 @@ cd $MINE_PATH
   fi
 
 echo "Creating settings and build gradle files"
-cp "${SCRIPT_PATH}/build.gradle" .
+sed -e "s/\${mineInstanceName}/${MINE_NAME}/" "${SCRIPT_PATH}/build.gradle" > build.gradle
 sed -e "s/\${mineInstanceName}/${MINE_NAME}/" "${SCRIPT_PATH}/settings.gradle" > settings.gradle
 
 cp -r "${SCRIPT_PATH}/gradle/" .
