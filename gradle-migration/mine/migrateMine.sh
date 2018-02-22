@@ -1,5 +1,5 @@
 #!/bin/sh
-updateProjectStructure()
+cleanProjectStructure()
 {
   echo "Converting $1 project to gradle"
   echo "cd $1"
@@ -10,7 +10,7 @@ updateProjectStructure()
     echo "Deleting ant build file"
     git rm build.xml
   fi
-  
+
   # if the src directory is empty, delete!
   if [ -d src ] && [ `ls -A src` = '.gitignore' ]; then
       rm -r src
@@ -18,7 +18,7 @@ updateProjectStructure()
 
   if [ ! -f build.gradle ]; then
     echo "Copying gradle build file"
-    "${1}-build.gradle" "build.gradle"
+    cp "${SCRIPT_PATH}/${1}/build.gradle" "build.gradle"
   fi
   cd ..
 }
@@ -35,10 +35,9 @@ cd $MINE_PATH
   find . -name ".project" -type f -delete
   find . -name ".classpath" -type f -delete
   find . -name ".checkstyle" -type f -delete
-  find . -name "log4j.properties" -type f -delete
 
   if [ -d dbmodel ]; then
-    updateProjectStructure dbmodel
+    cleanProjectStructure dbmodel
   fi
 
   if [ -d integrate ]; then
@@ -46,30 +45,34 @@ cd $MINE_PATH
   fi
 
   if [ -d webapp ]; then
-    updateProjectStructure webapp
+    cleanProjectStructure webapp
 
     cd webapp
 
     if [ ! -d src ]; then
       echo "Making /src directory"
       mkdir src
-    else 
+    else
       if [ -d src/org ]; then
         echo "Moving src/org to src/main/java"
-        mkdir src/main
+        mkdir -p src/main/java
         git mv src/org src/main/java
       fi
     fi
 
     if [ -d resources/webapp ]; then
+      if [ ! -d src/main ]; then
+        echo "Making src/main directory"
+        mkdir -p src/main
+      fi
       echo "Moving resources/webapp to src/main/resources/webapp"
-      git mv resources/webapp src/main/webapp
+      git mv resources/webapp src/main
     fi
 
     if [ -d resources ]; then
       echo "mv resources to src/main/resources"
 
-      git mv resources src/main/resources
+      git mv resources src/main
       git mv src/main/resources/web.properties src/main/webapp/WEB-INF/
     fi
 
@@ -77,13 +80,16 @@ cd $MINE_PATH
   fi
   if [ -d postprocess ]; then
     cd postprocess
-    if [ -d resources ]; then
-      git mv resources/* dbmodel/src/main/resources
+    if [ -d resources ] && [ `ls -A resources` != '.gitignore' ]; then
+      echo "Moving postprocess resources to dbmodel/resources"
+      git mv resources/* ../dbmodel/resources
     fi
     cd ..
-    rm -rf postprocess
+    # rm -rf postprocess
   fi
 
+echo "Deleting log4j.properties file"
+find . -name "log4j.properties" -type f -delete
 echo "Creating settings and build gradle files"
 sed -e "s/\${mineInstanceName}/${MINE_NAME}/" "${SCRIPT_PATH}/build.gradle" > build.gradle
 sed -e "s/\${mineInstanceName}/${MINE_NAME}/" "${SCRIPT_PATH}/settings.gradle" > settings.gradle
