@@ -1,4 +1,11 @@
 #!/bin/sh
+
+ usage()  
+ {  
+  echo "Usage: $0 /path/to/mine"  
+  exit 1  
+ } 
+
 cleanProjectStructure()
 {
   echo "Converting $1 project to gradle"
@@ -22,6 +29,10 @@ cleanProjectStructure()
   fi
   cd ..
 }
+
+if [ $# -ne 1 ] ; then
+    usage
+fi
 
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 MINE_PATH="${1}"
@@ -107,3 +118,4 @@ if [ -f default.intermine.webapp.properties ]; then
 fi
 
 echo "Migration completed"
+
