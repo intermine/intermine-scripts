@@ -12,7 +12,7 @@ ext {
   imVersion = "2.+"
 
   mineRelease = hasProperty('release') ? "." + release : ''
-  mineName = ${mineInstanceName}
+  mineName = "${mineInstanceName}"
   minePropertyFileName = "${mineName}.properties$mineRelease"
   minePropertyFile = "${System.env.HOME}/.intermine/$minePropertyFileName"
   println "Using properties file: '$minePropertyFile'"
