@@ -46,6 +46,8 @@ cd $MINE_PATH
   find . -name ".project" -type f -delete
   find . -name ".classpath" -type f -delete
   find . -name ".checkstyle" -type f -delete
+  echo "Deleting project properties files"
+  find . -name "project.properties" -type f -delete
 
   if [ -d dbmodel ]; then
     cleanProjectStructure dbmodel
