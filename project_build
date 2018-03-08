@@ -17,7 +17,7 @@ use Text::Glob qw(glob_to_regex);
 
 my $saved_dir = getcwd;
 
-my @ant_command = ("$saved_dir/gradlew");
+my @ant_command = ("$saved_dir/gradlew --stacktrace");
 
 my $dump_file_prefix;
 my $dump_host;
@@ -302,13 +302,13 @@ sub run_build_db
   log_and_print "\nbuilding db: @ant_command builddb\n";
 
   my $saved_dir = getcwd;
-  chdir "$saved_dir/dbmodel" or die "can't change directory into: $saved_dir/dbmodel\n";
+  #chdir "$saved_dir/dbmodel" or die "can't change directory into: $saved_dir/dbmodel\n";
 
   run_and_check_status @ant_command, "clean";
   run_and_check_status @ant_command, "builddb";
 
-  chdir $saved_dir
-    or die "can't return to previous directory ($saved_dir) after $saved_dir/dbmodel\n";
+  #chdir $saved_dir
+  #  or die "can't return to previous directory ($saved_dir) after $saved_dir/dbmodel\n";
 }
 
 sub dropdb_backups
@@ -420,12 +420,12 @@ sub server_restore
   log_and_print "finished restore - now analysing\n\n";
 
   my $saved_dir = getcwd;
-  chdir "$saved_dir/dbmodel" or die "can't change directory into: $saved_dir/dbmodel\n";
+  #chdir "$saved_dir/dbmodel" or die "can't change directory into: $saved_dir/dbmodel\n";
 
-  run_and_check_status @ant_command, "analyse-db-production";
+  #run_and_check_status @ant_command, "analyse-db-production";
 
-  chdir $saved_dir
-    or die "can't return to previous directory ($saved_dir) after $saved_dir/dbmodel\n";
+  #chdir $saved_dir
+  #  or die "can't return to previous directory ($saved_dir) after $saved_dir/dbmodel\n";
 
   log_and_print `date`, "\n\n";
   log_and_print "finished analysing\n\n";
@@ -532,13 +532,13 @@ sub start_element
   if ($element_name eq 'source') {
     push @{$self->{actions}}, {
                                type => 'integrate',
-                               args => ["-Dsource=$action_name"],
+                               args => ["integrate -Psource=$action_name"],
                                name => $action_name
                               };
   } elsif ($element_name eq 'post-process') {
       push @{$self->{actions}}, {
                                  type => 'postprocess',
-                                 args => ["-Daction=$action_name"],
+                                 args => ["postprocess -Pprocess=$action_name"],
                                  name => $action_name
                                 };
   } elsif ($element_name eq 'property' and $action_name eq 'intermine.properties.file') {
@@ -977,11 +977,11 @@ for my $action (@actions) {
 
     if ($action_type =~ /^(?:integrate|postprocess|webapp)$/) {
       my $saved_dir = getcwd;
-      chdir $action_type
-        or die "can't change directory into: $saved_dir/$action_type\n";      
+      #chdir $action_type
+      #  or die "can't change directory into: $saved_dir/$action_type\n";      
       run_and_check_status @ant_command, @action_args;
-      chdir $saved_dir
-        or die "can't return to previous directory ($saved_dir) after $action_type\n";
+      #chdir $saved_dir
+      #  or die "can't return to previous directory ($saved_dir) after $action_type\n";
     } elsif ($action_type eq 'dump') {
         if (@action_args != 1) {
           die "dump: needs one parameter at: $action: @action_args\n";
