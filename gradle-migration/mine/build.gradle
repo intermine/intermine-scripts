@@ -11,7 +11,7 @@ buildscript {
 ext {
   imVersion = "2.+"
 
-  mineRelease = hasProperty('release') ? "." + release : ''
+  mineRelease = project.hasProperty('release') ? "." + release : ''
   mineName = "${mineInstanceName}"
   minePropertyFileName = "${mineName}.properties$mineRelease"
   minePropertyFile = "${System.env.HOME}/.intermine/$minePropertyFileName"
