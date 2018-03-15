@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         mavenLocal()
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath group: 'org.intermine', name: 'plugin', version: '1.+'
@@ -27,7 +27,7 @@ subprojects {
   
   repositories {
     mavenLocal()
-    mavenCentral()
+    jcenter()
   }
 
   test {
