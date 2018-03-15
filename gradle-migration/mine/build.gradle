@@ -28,6 +28,7 @@ subprojects {
   repositories {
     mavenLocal()
     jcenter()
+    maven { url 'https://clojars.org/repo' }
   }
 
   test {

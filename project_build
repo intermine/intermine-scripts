@@ -17,7 +17,7 @@ use Text::Glob qw(glob_to_regex);
 
 my $saved_dir = getcwd;
 
-my @ant_command = ("$saved_dir/gradlew --stacktrace");
+my @ant_command = ("$saved_dir/gradlew --stacktrace --no-daemon");
 
 my $dump_file_prefix;
 my $dump_host;
