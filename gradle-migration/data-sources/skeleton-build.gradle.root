@@ -7,6 +7,9 @@ buildscript {
     repositories {
         mavenLocal()
         jcenter()
+        maven {
+            url "https://oss.jfrog.org/artifactory/oss-snapshot-local"
+        }
     }
     dependencies {
         classpath group: 'org.intermine', name: 'plugin', version: '1.+'
@@ -28,6 +31,9 @@ subprojects {
     repositories {
         mavenCentral()
         jcenter()
+        maven {
+            url "https://oss.jfrog.org/artifactory/oss-snapshot-local"
+        }
     }
 
     configurations {
