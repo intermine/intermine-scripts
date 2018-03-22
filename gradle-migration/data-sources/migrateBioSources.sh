@@ -23,6 +23,9 @@ then
   echo "Copied the gradle wrapper"
 fi
 
+cp $currentDir/gradle.properties .
+echo "Copied the gradle.properties"
+
 # migrate the bio sources located in the directory given in input
 for dir in `ls $bioSourcesDir -d */`
 do

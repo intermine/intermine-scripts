@@ -1,8 +1,3 @@
-ext {
-    imVersion = "2.+"
-    bioVersion = "2.+"
-}
-
 buildscript {
     repositories {
         mavenLocal()
@@ -12,8 +7,14 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: 'org.intermine', name: 'plugin', version: '1.+'
+        classpath group: 'org.intermine', name: 'plugin', version: System.getProperty("imVersion")
     }
+}
+
+ext {
+    // set here to make available to individual bio-sources
+    bioVersion = System.getProperty("bioVersion")
+    imVersion = System.getProperty("imVersion")
 }
 
 subprojects {

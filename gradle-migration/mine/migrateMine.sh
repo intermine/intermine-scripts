@@ -110,6 +110,7 @@ sed -e "s/\${mineInstanceName}/${MINE_NAME}/" "${SCRIPT_PATH}/settings.gradle" >
 cp -r "${SCRIPT_PATH}/gradle/" .
 cp "${SCRIPT_PATH}/gradlew" .
 cp "${SCRIPT_PATH}/gradlew.bat" .
+cp "${SCRIPT_PATH}/gradle.properties" .
 
 echo "Deleting default.intermine.*.properties"
 if [ -f default.intermine.integrate.properties ]; then
