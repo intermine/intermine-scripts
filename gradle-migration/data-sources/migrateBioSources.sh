@@ -13,7 +13,7 @@ if [ ! -f settings.gradle ]
 then   
   touch settings.gradle
   echo "Created the settings.gradle for the gradle multi-project"
-  echo "rootProject.name = 'bio-sources-${PWD##*/}'" >> settings.gradle
+  echo "rootProject.name = 'bio-sources'" >> settings.gradle
   createSettingsFile=true
 fi
 # copy gradle wrapper
