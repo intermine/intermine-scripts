@@ -38,7 +38,7 @@ then
   if [ createSettingsFile ]
   then 
     # update settings file with this data source
-    echo "include ':bio-source-$prj'," >> settings.gradle
+    echo "include ':bio-source-$prj'" >> settings.gradle
     echo "project(':bio-source-$prj').projectDir = new File(settingsDir, './$prj')" >> settings.gradle
   fi
 
