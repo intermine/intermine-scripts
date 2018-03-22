@@ -12,7 +12,7 @@ buildscript {
 }
 
 ext {
-  imVersion = "2.+"
+  imVersion = "2.0.+"
 
   mineRelease = project.hasProperty('release') ? "." + release : ''
   mineName = "${mineInstanceName}"

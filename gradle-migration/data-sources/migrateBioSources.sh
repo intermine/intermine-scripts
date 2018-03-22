@@ -1,5 +1,6 @@
 #!/bin/bash
 currentDir=`pwd`
+createSettingsFile=false
 cd $1
 # create the build.gradle in the root project
 if [ ! -f build.gradle ]
@@ -10,8 +11,10 @@ fi
 # create the settings.gradle
 if [ ! -f settings.gradle ]
 then   
-  cp $currentDir/skeleton-settings.gradle settings.gradle
+  touch settings.gradle
   echo "Created the settings.gradle for the gradle multi-project"
+  echo "rootProject.name = 'bio-sources-${PWD##*/}'" >> settings.gradle
+  createSettingsFile=true
 fi
 # copy gradle wrapper
 if [ ! -d gradle ]
@@ -27,6 +30,15 @@ prj="${dir%%/}"
 
 if [ "$prj" != "gradle" ]
 then
+
+  # only create the settings files once
+  if [ createSettingsFile ]
+  then 
+    # update settings file with this data source
+    echo "include ':bio-source-$prj'," >> settings.gradle
+    echo "project(':bio-source-$prj').projectDir = new File(settingsDir, './$prj')" >> settings.gradle
+  fi
+
 cd $prj
   echo ""
   echo "########################################################"
