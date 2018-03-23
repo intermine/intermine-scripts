@@ -13,7 +13,6 @@ cleanProjectStructure()
   cd $1
 
   if [ -f build.xml ]; then
-    # leaving project.properties where it is because people might need it for reference. Or not?
     echo "Deleting ant build file"
     git rm build.xml
   fi
@@ -27,6 +26,13 @@ cleanProjectStructure()
     echo "Copying gradle build file"
     cp "${SCRIPT_PATH}/${1}/build.gradle" "build.gradle"
   fi
+
+  # this file was renamed a while ago and both file names
+  # were accepted. let's just use the correct file name now.
+  if [ -f resources/so_terms_list.txt ]; then
+    git mv resources/so_terms_list.txt resources/so_terms
+  fi
+
   cd ..
 }
 
