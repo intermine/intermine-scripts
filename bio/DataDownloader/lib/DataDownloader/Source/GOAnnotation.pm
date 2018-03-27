@@ -50,8 +50,8 @@ sub BUILD {
     my @sources = (
         {   
             SUBTITLE   => "GO",
-            SERVER     => "http://purl.obolibrary.org/obo",
-            FILE       => "go.obo",
+            SERVER     => "http://purl.obolibrary.org/obo/go",
+            FILE       => "go-basic.obo",
         }
     );
 
