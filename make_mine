@@ -6,8 +6,7 @@ use File::Find;
 use File::Path;
 use Cwd;
 
-my $BIO_DIR = 'bio';
-my $STRUCTURE_DIR = "$BIO_DIR/skeletons/mine";
+my $STRUCTURE_DIR = "skeletons/mine";
 
 sub usage
 {
@@ -39,13 +38,6 @@ my %substitutions = (
                     );
 
 # check that we're in the right part of checkout
-
-if (!-d 'imbuild' || !-d 'intermine') {
-  usage (<<MESSAGE);
-need to run in the top level of an intermine checkout (containing
-"imbuild" and "intermine")
-MESSAGE
-}
 
 my $start_dir = getcwd;
 
