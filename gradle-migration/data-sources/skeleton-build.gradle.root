@@ -60,6 +60,13 @@ subprojects {
         defaultInterminePropertiesFile = "default.intermine.bio-test.properties"
     }
 
+    // uncomment to specify an extra additions file for your bio-sources
+    // this file will be merged with the additions file for each data source
+    // and included in each source JAR.
+    //bioSourceDBModelConfig {
+    //    extraAdditionsFile = "MY-MINE_additions.xml"
+    //}
+
     task copyMineProperties(type: Copy) {
         from "${System.env.HOME}/.intermine/intermine-bio-test.properties"
         into sourceSets.main.output.resourcesDir
