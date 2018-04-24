@@ -60,6 +60,7 @@ cd $MINE_PATH
   fi
 
   if [ -d integrate ]; then
+    git mv integrate/resources/* dbmodel/resources
     rm -rf integrate
   fi
 
