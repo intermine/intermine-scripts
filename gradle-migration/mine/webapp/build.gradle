@@ -1,6 +1,7 @@
 apply plugin: "war"
 apply from: "https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin"
 apply plugin: "webapp"
+apply plugin: "com.bmuschko.cargo"
 
 sourceSets {
     main {
@@ -63,6 +64,68 @@ file(minePropertyFile).withInputStream { props.load(it) }
 gretty {
     jvmArgs = ['-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true']
     contextPath = props.getProperty("webapp.path")
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Use cargo to deploy the webapp to an existing Tomcat instance, either via the HTTP Tomcat manager or local file copy.
+// ---------------------------------------------------------------------------------------------------------------------
+cargo {
+
+    // change this to match your Tomcat major version (keep the x)
+    containerId = 'tomcat8x'
+    //port = 8080
+
+    // change this to the Tomcat root of your choice
+    deployable {
+        context = props.getProperty("webapp.path")
+    }
+
+    def remoteHostName = "localhost"
+
+    // if "hostname" is defined in properties file, use that
+    // otherwise derive from deployUrl, e.g. http://localhost:8080
+    if (props.hasProperty("webapp.hostname")) {
+        remoteHostName = props.getProperty("webapp.hostname")
+    } else {
+        remoteHostName = getServerName(props.getProperty("webapp.deploy.url"))
+    }
+
+    // change these to match your Tomcat host and tomcat-users config
+    remote {
+        hostname = remoteHostName
+        protocol = "http"
+        username = props.getProperty("webapp.manager")
+        password = props.getProperty("webapp.password")
+    }
+
+    // local deployment - copies files to Tomcat rather than using Tomcat manager
+//    local {
+//        homeDir = file('/home/julie/apache-tomcat-8.5.20')
+//    }
+}
+
+cargoStartLocal.dependsOn war
+cargoRunLocal.dependsOn war
+cargoRedeployLocal.dependsOn war
+cargoDeployRemote.dependsOn war
+cargoRedeployRemote.dependsOn war
+
+// gets the hostname from the old intermine parameter, e.g. http://localhost:8080 > localhost
+String getServerName(String deployUrl) {
+    // chop off protocol
+    if (deployUrl.contains("//")) {
+        // https:// or http://
+        deployUrl = deployUrl.substring(deployUrl.indexOf("/") + 2, deployUrl.length())
+    }
+
+    // chop off port
+    if (deployUrl.contains(":")) {
+        // localhost:8080
+        String[] bits = deployUrl.split(":")
+        deployUrl = bits[0]
+    }
+
+    return deployUrl
 }
 
 task blueGenesStart(type: JavaExec) {
