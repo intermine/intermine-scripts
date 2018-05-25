@@ -71,29 +71,38 @@ gretty {
 // ---------------------------------------------------------------------------------------------------------------------
 cargo {
 
+    def remotePort = 8080
+    if (props.hasProperty("webapp.port")) {
+        remotePort = props.getProperty("webapp.port")
+    }
+
     // change this to match your Tomcat major version (keep the x)
     containerId = 'tomcat8x'
-    //port = 8080
+    port = remotePort
 
     // change this to the Tomcat root of your choice
     deployable {
         context = props.getProperty("webapp.path")
     }
 
-    def remoteHostName = "localhost"
-
     // if "hostname" is defined in properties file, use that
     // otherwise derive from deployUrl, e.g. http://localhost:8080
+    def remoteHostName = "localhost"
     if (props.hasProperty("webapp.hostname")) {
         remoteHostName = props.getProperty("webapp.hostname")
     } else {
         remoteHostName = getServerName(props.getProperty("webapp.deploy.url"))
     }
 
+    def remoteProtocol = "http"
+    if (props.hasProperty("webapp.protocol")) {
+        remoteProtocol = props.getProperty("webapp.protocol")
+    }
+
     // change these to match your Tomcat host and tomcat-users config
     remote {
         hostname = remoteHostName
-        protocol = "http"
+        protocol = remoteProtocol
         username = props.getProperty("webapp.manager")
         password = props.getProperty("webapp.password")
     }
@@ -128,6 +137,10 @@ String getServerName(String deployUrl) {
     return deployUrl
 }
 
+
+// -------------------------------------------------------------------------------------------------------------------
+//  task to start a bluegenes instance. Points to the database listed in the property files
+// -------------------------------------------------------------------------------------------------------------------
 task blueGenesStart(type: JavaExec) {
     classpath = configurations.onlyRunTime
     main = "bluegenes.core"
