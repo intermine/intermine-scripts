@@ -78,7 +78,7 @@ gene_ids = read_gene_ids(gene_info_filename)
 print 'genes from gene_info file: ', len(gene_ids)
 
 output = open(sys.argv[2], 'w')
-fetch_summaries(gene_ids, output, 500)
+fetch_summaries(gene_ids, output, 400)
 
 
 
