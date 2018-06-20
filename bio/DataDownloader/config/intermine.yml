@@ -36,7 +36,6 @@ default_sources:
   - "Orphanet"
   - "DO"
   - "FlyBaseAlleles"
-  - "InterProProtein"
 
 UniProt:
     organisms:
