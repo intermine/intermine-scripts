@@ -14,7 +14,7 @@ use constant {
 
     # For determining versions
     HOST => "ftp.ebi.ac.uk",
-    REMOTE_DIR => "pub/databases/IntAct/current",
+    REMOTE_DIR => "pub/databases/intact/current",
     REF_FILE => "all.zip",
 };
 
