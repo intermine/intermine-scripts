@@ -10,7 +10,7 @@ use constant {
     DESCRIPTION => 'Biological General Repository for Interaction Datasets',
     SOURCE_LINK => 'https://thebiogrid.org',
     SOURCE_DIR => 'biogrid',
-    METADATA_URL => "https://thebiogrid.org/scripts/fetchDirectoryDescription.php",
+    METADATA_URL => "https://downloads.thebiogrid.org/BioGRID/Latest-Release/",
 };
 use constant ORGANISMS => (
     "Drosophila_melanogaster",
@@ -51,7 +51,7 @@ sub generate_version {
         process 'h2', heading => 'TEXT';
     };
     my $ua = LWP::UserAgent->new(agent => 'Mozilla/5.0');
-    my $response = $ua->post(METADATA_URL, {directory => '/Current Release'});
+    my $response = $ua->post(METADATA_URL, {directory => '/BioGRID Release'});
     confess $response->status_line unless $response->is_success;
     my $scraps = $scraper->scrape($response->content);
     my ($version) = $scraps->{heading} =~ /Release\s+(.*)/g;
