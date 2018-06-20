@@ -122,13 +122,13 @@ cargoRedeployRemote.dependsOn war
 // gets the hostname from the old intermine parameter, e.g. http://localhost:8080 > localhost
 String getServerName(String deployUrl) {
     // chop off protocol
-    if (deployUrl.contains("//")) {
+    if (deployUrl != null && deployUrl.contains("//")) {
         // https:// or http://
         deployUrl = deployUrl.substring(deployUrl.indexOf("/") + 2, deployUrl.length())
     }
 
     // chop off port
-    if (deployUrl.contains(":")) {
+    if (deployUrl != null && deployUrl.contains(":")) {
         // localhost:8080
         String[] bits = deployUrl.split(":")
         deployUrl = bits[0]
@@ -150,5 +150,6 @@ task blueGenesStart(type: JavaExec) {
     environment("bluegenes-default-service-root", props.getProperty("webapp.baseurl") + "/" + props.getProperty("webapp.path"))
     // FlyMine Beta
     environment("bluegenes-default-mine-name", props.getProperty("project.title"))
+    // 
     environment("bluegenes-jar-version", System.getProperty("blueGenesVersion"))
 }
