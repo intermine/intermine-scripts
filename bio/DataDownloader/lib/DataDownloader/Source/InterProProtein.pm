@@ -13,14 +13,14 @@ use constant {
         {
             SUBTITLE => 'Match complete',
             HOST => 'ftp.ebi.ac.uk',
-            REMOTE_DIR => 'pub/databases/interpro/Current',
+            REMOTE_DIR => 'pub/databases/interpro/current',
             FILE => 'match_complete.xml.gz',
             EXTRACT => 1,
         },
         {
             SUBTITLE => 'Proteins to domains',
             HOST => 'ftp.ebi.ac.uk',
-            REMOTE_DIR => 'pub/databases/interpro/Current',
+            REMOTE_DIR => 'pub/databases/interpro/current',
             FILE => 'protein2ipr.dat.gz',
             EXTRACT => 1,
         },
