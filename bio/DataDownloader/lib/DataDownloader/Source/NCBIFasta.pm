@@ -11,8 +11,6 @@ use constant {
     SOURCE_DIR  => "human/fasta",
 };
 
-use constant FILE_TYPES =>
-  qr/hs_ref_GRCh38.p7_chr/;
 
 sub BUILD {
     my $self = shift;
@@ -22,8 +20,7 @@ sub BUILD {
                 REMOTE_DIR => "genomes/H_sapiens/Assembled_chromosomes/seq",
                 FILE       => $file,
                 EXTRACT    => 1,
-            ) if ( $file =~ FILE_TYPES );
-
+            );
     }
 }
 
