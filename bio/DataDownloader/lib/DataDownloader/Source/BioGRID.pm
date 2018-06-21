@@ -3,7 +3,7 @@ package DataDownloader::Source::BioGRID;
 use Moose;
 extends 'DataDownloader::Source::ABC';
 use LWP;
-use Web::Scraper;
+use LWP::Simple;
 
 use constant {
     TITLE => 'BioGRID',
@@ -21,16 +21,20 @@ use constant ORGANISMS => (
 
 sub BUILD {
     my $self = shift;
+    my $version = $self->get_version;
+    my @files_to_extract = 
+        map { 'BIOGRID-ORGANISM-' . $_ . '-' . $version . '.psi25.xml'} 
+        ORGANISMS;
 
     $self->set_sources([
         {
-            SERVER => 'https://downloads.thebiogrid.org/BioGRID/Latest-Release/',
-            FILE => 'BIOGRID-ORGANISM-LATEST.psi25.zip',
+            SERVER => 'https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/BIOGRID-' . $version,
+            FILE => 'BIOGRID-ORGANISM-' . $version . '.psi25.zip',
 
             CLEANER => sub {
                 my $self = shift;
                 my $file = $self->get_destination;
-                my @args = ('unzip', $file, '-d', 
+                my @args = ('unzip', $file, @files_to_extract, '-d', 
                     $self->get_destination_dir);
                 $self->execute_system_command(@args);
                 $self->debug("Removing original file: $file");
@@ -38,4 +42,9 @@ sub BUILD {
             },
         },
     ]);
+}
+
+sub generate_version {
+    my $updated_version = get("https://webservice.thebiogrid.org/version/?accessKey=40a4a9dbb368884a0ce9041c64c121de");
+    return $updated_version;
 }
