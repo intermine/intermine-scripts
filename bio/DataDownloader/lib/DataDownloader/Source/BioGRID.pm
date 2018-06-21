@@ -10,7 +10,6 @@ use constant {
     DESCRIPTION => 'Biological General Repository for Interaction Datasets',
     SOURCE_LINK => 'https://thebiogrid.org',
     SOURCE_DIR => 'biogrid',
-    METADATA_URL => "https://downloads.thebiogrid.org/BioGRID/",
 };
 use constant ORGANISMS => (
     "Drosophila_melanogaster",
@@ -22,20 +21,16 @@ use constant ORGANISMS => (
 
 sub BUILD {
     my $self = shift;
-    my $version = $self->get_version;
-    my @files_to_extract = 
-        map { 'BIOGRID-ORGANISM-' . $_ . '-' . $version . '.psi25.xml'} 
-        ORGANISMS;
 
     $self->set_sources([
         {
-            SERVER => 'https://downloads.thebiogrid.org/BioGRID/Release%20Archive/BIOGRID-' . $version,
-            FILE => 'BIOGRID-ORGANISM-' . $version . '.psi25.zip',
+            SERVER => 'https://downloads.thebiogrid.org/BioGRID/Latest-Release/',
+            FILE => 'BIOGRID-ORGANISM-LATEST.psi25.zip',
 
             CLEANER => sub {
                 my $self = shift;
                 my $file = $self->get_destination;
-                my @args = ('unzip', $file, @files_to_extract, '-d', 
+                my @args = ('unzip', $file, '-d', 
                     $self->get_destination_dir);
                 $self->execute_system_command(@args);
                 $self->debug("Removing original file: $file");
@@ -43,18 +38,4 @@ sub BUILD {
             },
         },
     ]);
-}
-
-sub generate_version {
-    my $self = shift;
-    my $scraper = scraper {
-        process 'h2', heading => 'TEXT';
-    };
-    my $ua = LWP::UserAgent->new(agent => 'Mozilla/5.0');
-    my $response = $ua->post(METADATA_URL, {directory => '/Latest-Release'});
-    confess $response->status_line unless $response->is_success;
-    my $scraps = $scraper->scrape($response->content);
-    my ($version) = $scraps->{heading} =~ /BioGRID Release\s+(.*)/g;
-    die "Could not determine Biogrid version" unless $version;
-    return $version;
 }
