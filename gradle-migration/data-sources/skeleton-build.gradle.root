@@ -26,11 +26,11 @@ subprojects {
     apply plugin: 'dbmodel'
     apply plugin: 'biosource-dbmodel'
 
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     repositories {
-        mavenCentral()
+        mavenLocal()
         jcenter()
         maven {
             url "https://oss.jfrog.org/artifactory/oss-snapshot-local"
@@ -67,11 +67,15 @@ subprojects {
     //    extraAdditionsFile = "MY-MINE_additions.xml"
     //}
 
-    task copyMineProperties(type: Copy) {
-        from "${System.env.HOME}/.intermine/intermine-bio-test.properties"
-        into sourceSets.main.output.resourcesDir
-        rename { fileName -> fileName.replace('intermine-bio-test.properties', 'intermine.properties') }
-        inputs.sourceFiles.stopExecutionIfEmpty()
+    task copyMineProperties() {
+        dependsOn 'processResources'
+        doLast {
+            copy {
+                from "${System.env.HOME}/.intermine/intermine-bio-test.properties"
+                into sourceSets.main.output.resourcesDir
+                rename { fileName -> fileName.replace('intermine-bio-test.properties', 'intermine.properties') }
+            }
+        }
     }
 
     jar {
