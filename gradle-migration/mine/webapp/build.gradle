@@ -30,15 +30,6 @@ dependencies {
     onlyRunTime group: 'org.intermine', name: 'bluegenes', version: System.getProperty("blueGenesVersion")
 }
 
-webappConfig {
-    mineName = "${mineInstanceName}"
-    objectStoreName = "os.production"
-    userProfileObjectStoreName = "os.userprofile-production"
-    userProfileObjectStoreWriterName = "osw.userprofile-production"
-    defaultInterminePropertiesFile = "default.intermine.production.properties"
-    propsDir = "$mergePropsDir"
-}
-
 war {
     dependsOn 'mergeProperties', 'summariseObjectStore', 'unwarBioWebApp', 'addStrutsConfig'
     finalizedBy 'warWebApp'
@@ -57,7 +48,7 @@ task copyWebappContent(type: Copy) {
     into "${explodedWebAppDir}"
 }
 
-// read in biotestmine.properties to get the contextPath
+// read in mine.properties to get the contextPath
 def props = new Properties()
 file(minePropertyFile).withInputStream { props.load(it) }
 
@@ -66,36 +57,45 @@ gretty {
     contextPath = props.getProperty("webapp.path")
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-// Use cargo to deploy the webapp to an existing Tomcat instance, either via the HTTP Tomcat manager or local file copy.
-// ---------------------------------------------------------------------------------------------------------------------
-cargo {
+webappConfig {
+    mineName = "${mineInstanceName}"
+    objectStoreName = "os.production"
+    userProfileObjectStoreName = "os.userprofile-production"
+    userProfileObjectStoreWriterName = "osw.userprofile-production"
+    defaultInterminePropertiesFile = "default.intermine.production.properties"
+    propsDir = "$mergePropsDir"
+}
 
-    def remotePort = 8080
-    if (props.hasProperty("webapp.port")) {
-        remotePort = props.getProperty("webapp.port")
-    }
+// -------------------------------------------------------------------------------------------------------
+// Use cargo to deploy the webapp to an existing Tomcat instance, either via the HTTP Tomcat manager or local file copy.
+// -------------------------------------------------------------------------------------------------------
+cargo {
 
     // change this to match your Tomcat major version (keep the x)
     containerId = 'tomcat8x'
-    port = remotePort
+    int remotePort = 8080
+    if (props.getProperty("webapp.port") != null) {
+        remotePort = props.getProperty("webapp.port").toInteger()
+    }
 
     // change this to the Tomcat root of your choice
     deployable {
         context = props.getProperty("webapp.path")
     }
 
-    // if "hostname" is defined in properties file, use that
-    // otherwise derive from deployUrl, e.g. http://localhost:8080
     def remoteHostName = "localhost"
-    if (props.hasProperty("webapp.hostname")) {
+
+    // if "hostname" is defined in properties file, use that
+    if (props.getProperty("webapp.hostname") != null) {
         remoteHostName = props.getProperty("webapp.hostname")
     } else {
         remoteHostName = getServerName(props.getProperty("webapp.deploy.url"))
     }
 
     def remoteProtocol = "http"
-    if (props.hasProperty("webapp.protocol")) {
+
+    // if "protocol" is defined in properties file, use that
+    if (props.getProperty("webapp.protocol") != null) {
         remoteProtocol = props.getProperty("webapp.protocol")
     }
 
@@ -105,12 +105,8 @@ cargo {
         protocol = remoteProtocol
         username = props.getProperty("webapp.manager")
         password = props.getProperty("webapp.password")
+        port = remotePort
     }
-
-    // local deployment - copies files to Tomcat rather than using Tomcat manager
-//    local {
-//        homeDir = file('/home/julie/apache-tomcat-8.5.20')
-//    }
 }
 
 cargoStartLocal.dependsOn war
@@ -122,7 +118,7 @@ cargoRedeployRemote.dependsOn war
 // gets the hostname from the old intermine parameter, e.g. http://localhost:8080 > localhost
 String getServerName(String deployUrl) {
     // chop off protocol
-    if (deployUrl != null && deployUrl.contains("//")) {
+    if (deployUrl != null && deployUrl.indexOf("/") >= 0) {
         // https:// or http://
         deployUrl = deployUrl.substring(deployUrl.indexOf("/") + 2, deployUrl.length())
     }
@@ -137,10 +133,6 @@ String getServerName(String deployUrl) {
     return deployUrl
 }
 
-
-// -------------------------------------------------------------------------------------------------------------------
-//  task to start a bluegenes instance. Points to the database listed in the property files
-// -------------------------------------------------------------------------------------------------------------------
 task blueGenesStart(type: JavaExec) {
     classpath = configurations.onlyRunTime
     main = "bluegenes.core"
@@ -150,6 +142,5 @@ task blueGenesStart(type: JavaExec) {
     environment("bluegenes-default-service-root", props.getProperty("webapp.baseurl") + "/" + props.getProperty("webapp.path"))
     // FlyMine Beta
     environment("bluegenes-default-mine-name", props.getProperty("project.title"))
-    // 
     environment("bluegenes-jar-version", System.getProperty("blueGenesVersion"))
 }

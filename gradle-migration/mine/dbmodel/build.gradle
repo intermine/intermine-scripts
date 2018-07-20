@@ -38,5 +38,3 @@ mineDBModelConfig {
     extraModelsStart = "so_additions.xml genomic_additions.xml global_additions.xml"
     extraModelsEnd = ""
 }
-
-
