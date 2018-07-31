@@ -60,7 +60,6 @@ cd $prj
 
   if [ -d main ]
   then
-    cd $prj
     echo "Creating src dir"
     mkdir -p src
     echo "Moving main dir under src ..."
