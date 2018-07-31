@@ -105,7 +105,8 @@ cd $MINE_PATH
       git mv resources/* ../dbmodel/resources
     fi
     cd ..
-    # rm -rf postprocess
+    echo "Removing postprocess directory"
+    rm -rf postprocess
   fi
 
 echo "Deleting log4j.properties file"
