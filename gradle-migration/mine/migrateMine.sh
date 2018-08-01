@@ -18,8 +18,15 @@ cleanProjectStructure()
   fi
 
   # if the src directory is empty, delete!
-  if [ -d src ] && [ `ls -A src` = '.gitignore' ]; then
+  if [ -d src ]; then
+    # if the src directory has subdirs then keep.
+    # otherwise it's likely just .gitignore and should 
+    # be deleted
+    subdircount=`find src -maxdepth 1 -type d | wc -l`
+    if [ $subdircount -lt 2 ]; then 
+      echo "Deleting $1 src directory because it's empty"
       rm -r src
+    fi
   fi
 
   if [ ! -f build.gradle ]; then
