@@ -6,6 +6,10 @@
   exit 1  
  } 
 
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+MINE_PATH="${1}"
+MINE_NAME=`basename $MINE_PATH`
+
 cleanProjectStructure()
 {
   echo "Converting $1 project to gradle"
@@ -31,7 +35,7 @@ cleanProjectStructure()
 
   if [ ! -f build.gradle ]; then
     echo "Copying gradle build file"
-    cp "${SCRIPT_PATH}/${1}/build.gradle" "build.gradle"
+    sed -e "s/\${mineInstanceName}/${MINE_NAME}/" "${SCRIPT_PATH}/${1}/build.gradle" > build.gradle
   fi
 
   # this file was renamed a while ago and both file names
@@ -39,18 +43,12 @@ cleanProjectStructure()
   if [ -f resources/so_terms_list.txt ]; then
     git mv resources/so_terms_list.txt resources/so_terms
   fi
-
   cd ..
 }
 
 if [ $# -ne 1 ] ; then
     usage
 fi
-
-SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-MINE_PATH="${1}"
-MINE_NAME=`basename $MINE_PATH`
-
 echo "Converting ${MINE_NAME} to gradle"
 
 cd $MINE_PATH
@@ -119,6 +117,7 @@ cd $MINE_PATH
 echo "Deleting log4j.properties file"
 find . -name "log4j.properties" -type f -delete
 echo "Creating settings and build gradle files"
+
 sed -e "s/\${mineInstanceName}/${MINE_NAME}/" "${SCRIPT_PATH}/build.gradle" > build.gradle
 sed -e "s/\${mineInstanceName}/${MINE_NAME}/" "${SCRIPT_PATH}/settings.gradle" > settings.gradle
 
