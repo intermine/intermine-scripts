@@ -69,9 +69,15 @@ sub process
 
       print $dest $line;
     }
-
+    print "$dest_path\n";
+    
     close $orig or die "can't close $orig_path: $!\n";
     close $dest or die "can't close $dest_path: $!\n";
+
+    # make the ./gradlew file executable
+    if ($_ eq "gradlew") {
+      chmod 0777, $dest_path;
+    }
   }
 }
 
