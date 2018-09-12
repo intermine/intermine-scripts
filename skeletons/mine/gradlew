@@ -6,8 +6,6 @@
 ##
 ##############################################################################
 
-DEFAULT_JVM_OPTS="-Xmx32G -XX:+UseParallelGC -Xms2G" 
-
 # Attempt to set APP_HOME
 # Resolve links: $0 may be a link
 PRG="$0"

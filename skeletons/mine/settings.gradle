@@ -1,4 +1,4 @@
-rootProject.name = 'flymine'
+rootProject.name = '${mineInstanceName}'
 
 include ':dbmodel',':webapp'
 

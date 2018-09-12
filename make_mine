@@ -33,8 +33,7 @@ my $mine_name = shift;
 my $mine_dir = lc $mine_name;
 
 my %substitutions = (
-                     'mine-name' => $mine_name,
-                     'mine-dir' => $mine_dir,
+                     'mineInstanceName' => $mine_name
                     );
 
 # check that we're in the right part of checkout
@@ -59,6 +58,7 @@ sub process
   if (-d $orig_path) {
     mkpath($dest_path);
   } else {
+
     open my $orig, '<', $orig_path or die "can't open $orig_path: $!\n";
     open my $dest, '>', $dest_path or die "can't open $dest_path: $!\n";
 
@@ -69,7 +69,6 @@ sub process
 
       print $dest $line;
     }
-    print "$dest_path\n";
     
     close $orig or die "can't close $orig_path: $!\n";
     close $dest or die "can't close $dest_path: $!\n";
