@@ -4,9 +4,13 @@ use strict;
 use warnings;
 use File::Find;
 use File::Path;
+use File::Basename;
 use Cwd;
 
-my $STRUCTURE_DIR = "skeletons/mine";
+# get the directory where this script is
+my $script_directory = dirname($0);
+# point to the skeletons to make a basic mine
+my $STRUCTURE_DIR = "$script_directory/skeletons/mine";
 
 sub usage
 {
@@ -36,10 +40,8 @@ my %substitutions = (
                      'mineInstanceName' => $mine_name
                     );
 
-# check that we're in the right part of checkout
-
+# will create mine in current directory
 my $start_dir = getcwd;
-
 my $new_mine_dir = "$start_dir/$mine_dir";
 
 if (-e $new_mine_dir) {
@@ -50,7 +52,7 @@ MESSAGE
 
 sub process
 {
-  my $orig_path = "$start_dir/$File::Find::name";
+  my $orig_path = $_;
   my $dest_path = $File::Find::name;
 
   $dest_path =~ s:$STRUCTURE_DIR(.*):$new_mine_dir$1:;
