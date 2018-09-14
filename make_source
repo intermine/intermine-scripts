@@ -4,13 +4,9 @@ use strict;
 use warnings;
 use File::Find;
 use File::Path;
+use File::Basename;
 use Cwd;
 
-# get the directory where this script is
-my $script_directory = dirname($0);
-
-my $BIO_DIR = 'bio';
-my $STRUCTURE_DIR = "$script_directory/skeletons/source";
 
 my $CUSTOM_FILE_TYPE = 'custom-file';
 my $ITEMS_XML_FILE_TYPE = 'intermine-items-xml-file';
@@ -145,7 +141,7 @@ $0: $message
 usage:
   $0 <source-name> <source-type>
 
-<source-name> - the name of the directory to create in $BIO_DIR/sources
+<source-name> - the name of the directory to create in current directory
                 eg. foobase-gene-data
 <source-type> - possible source types are:
 $source_types
@@ -163,7 +159,7 @@ For the obo source_type you need to specify additional parameters:
 usage:
   $0 <source-name> <source-type> <ontology-name> <ontology-url> <term-class>
 
-<source-name> - the name of the directory to create in $BIO_DIR/sources
+<source-name> - the name of the directory to create in this directory
                 eg. foobase-gene-data
 <source-type> - the source type is 'obo'
 <ontology-name> - the name of the ontology
@@ -175,9 +171,11 @@ usage:
 MESSAGE
 }
 
+# obsolete
 my @base_project_properties =
   qw(intermine/objectstore/main bio/core/main intermine/integrate/main);
 
+# obsolete
 my $project_dependencies = join ", \\\n           ", @base_project_properties;
 
 my %type_config;
@@ -188,8 +186,20 @@ if (exists $type_properties{$source_type}) {
   usage ("unknown source type: $source_type");
 }
 
+# there are two types of sources. Ones that create a src/main directory and ones 
+# that only create a /resources directory. We use different skeletons for each
 my $create_main = $type_config{create_main};
 
+# get the directory where this script is
+my $script_directory = dirname($0);
+# skeletons are in the scripts dir
+my $STRUCTURE_DIR = "$script_directory/skeletons/data-sources/resources-only-source";
+if ($create_main) {
+  $STRUCTURE_DIR = "$script_directory/skeletons/data-sources/custom-source";
+}
+
+
+# obsolete
 if ($create_main) {
   $project_dependencies .= ", \\\n           bio/sources/${source_name}/main";
 }
@@ -204,13 +214,14 @@ my %substitutions = (
 
 $substitutions{'project-properties'} = &{$type_config{project_props_gen}};
 
+# OBSOLETE
 # check that we're in the right part of checkout
-if (!-d 'imbuild' || !-d 'intermine') {
-  usage (<<MESSAGE);
-need to run in the top level of an intermine checkout (containing
-"imbuild" and "intermine")
-MESSAGE
-}
+# if (!-d 'imbuild' || !-d 'intermine') {
+#   usage (<<MESSAGE);
+# need to run in the top level of an intermine checkout (containing
+# "imbuild" and "intermine")
+# MESSAGE
+# }
 
 # Take a string and substitute all of the keys that appear in the %substitutions
 # map with the values from the map.  eg.  the string "${source-name}" will
@@ -240,7 +251,7 @@ sub starts_with_test
   return $path =~ m:^test($|/):;
 }
 
-my $full_source_dir = "$start_dir/$BIO_DIR/sources/$source_name";
+my $full_source_dir = "$start_dir/$source_name";
 
 if (-e $full_source_dir) {
   usage(<<MESSAGE);
