@@ -5,8 +5,9 @@ use warnings;
 use File::Find;
 use File::Path;
 use File::Basename;
+use File::Copy;
+use File::Copy::Recursive qw(fcopy rcopy dircopy fmove rmove dirmove);
 use Cwd;
-
 
 my $CUSTOM_FILE_TYPE = 'custom-file';
 my $ITEMS_XML_FILE_TYPE = 'intermine-items-xml-file';
@@ -171,12 +172,32 @@ usage:
 MESSAGE
 }
 
-# obsolete
-my @base_project_properties =
-  qw(intermine/objectstore/main bio/core/main intermine/integrate/main);
+# get the directory where this script is
+my $script_directory = dirname($0);
 
-# obsolete
-my $project_dependencies = join ", \\\n           ", @base_project_properties;
+# check to see if there is already a gradle project created. 
+# if YES, create a simple source
+# if NO, create a gradle project
+my $create_project = 1;
+if (-e "settings.gradle") {
+  # we already have a settings.gradle file. don't create a new project
+  $create_project = 0;
+}
+
+# copy over gradle files
+# add this source to settings.gradle
+# move into that directory
+if ($create_project) {
+  my $source_dir = "$script_directory/skeletons/data-sources/gradle";
+  dircopy("$source_dir", cwd) or die $!;
+}
+
+# add this data source to our settings file
+my $settings_file = 'settings.gradle';
+open(my $fh, '>>', $settings_file) or die "Could not open file '$settings_file' $!";
+say $fh "include ':bio-source-$source_name'";
+say $fh "project(':bio-source-$source_name').projectDir = new File(settingsDir, './$source_name')";
+close $fh;
 
 my %type_config;
 
@@ -190,38 +211,21 @@ if (exists $type_properties{$source_type}) {
 # that only create a /resources directory. We use different skeletons for each
 my $create_main = $type_config{create_main};
 
-# get the directory where this script is
-my $script_directory = dirname($0);
+
 # skeletons are in the scripts dir
 my $STRUCTURE_DIR = "$script_directory/skeletons/data-sources/resources-only-source";
 if ($create_main) {
   $STRUCTURE_DIR = "$script_directory/skeletons/data-sources/custom-source";
 }
 
-
-# obsolete
-if ($create_main) {
-  $project_dependencies .= ", \\\n           bio/sources/${source_name}/main";
-}
-
 # map of patterns to substitute; for each key we look for ${key} and substitute
 # the value from the map
 my %substitutions = (
                      'source-name' => $source_name,
-                     'camel-case-source-name' => $camel_case_source_name,
-                     'project-dependencies' => $project_dependencies
+                     'camel-case-source-name' => $camel_case_source_name
                     );
 
 $substitutions{'project-properties'} = &{$type_config{project_props_gen}};
-
-# OBSOLETE
-# check that we're in the right part of checkout
-# if (!-d 'imbuild' || !-d 'intermine') {
-#   usage (<<MESSAGE);
-# need to run in the top level of an intermine checkout (containing
-# "imbuild" and "intermine")
-# MESSAGE
-# }
 
 # Take a string and substitute all of the keys that appear in the %substitutions
 # map with the values from the map.  eg.  the string "${source-name}" will
@@ -265,7 +269,7 @@ MESSAGE
 # new source directory
 sub process
 {
-  my $orig_path = "$start_dir/$File::Find::name";
+  my $orig_path = $File::Find::name;
   my $dest_path = $File::Find::name;
 
   $dest_path =~ s:$STRUCTURE_DIR/?::;
