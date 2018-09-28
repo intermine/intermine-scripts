@@ -12,70 +12,44 @@ binmode(STDOUT, 'utf8');
 # Silence warnings when printing null fields
 no warnings ('uninitialized');
 
-my @old_term_names;
+my @term_names;
+my $so_file = "/local-homes/julie/git/gradle/bio/sources/so/data/so.obo";
+my %term_hash;
 
-my $new_so_file = "/tmp/so/so.obo.new";
-my $old_so_file = "/tmp/so/so.obo";
+open(SO_FILE, "< $so_file") || die "cannot open $so_file: $!\n";
 
-
-# takes two SO files, does a DIFF, java-ises the new terms and prints them out
-
-#################### OLD file ######################################
-
-open(OLD_SO_FILE, "< $old_so_file") || die "cannot open $old_so_file: $!\n";
-
-#print "reading in so file from $old_so_file\n";
-
-while (<OLD_SO_FILE>) {
-  chomp;
-
-  my $line = $_;
-
-  if ($line  =~ /^name/) {
-      push @old_term_names, $line;
-  }
-}
-
-#print "Done reading old file\n";
-
-#################### NEW file ######################################
-
-# turn into a hash
-my %terms_hash = map { $_ => 1 } @old_term_names;
-
-# newly added terms
-my @new_term_names;
-
-open(NEW_SO_FILE, "< $new_so_file") || die "cannot open $new_so_file: $!\n";
-
-#print "reading in so file from $new_so_file\n";
-
-my %added_term_hash;
-
-while (<NEW_SO_FILE>) {
+while (<SO_FILE>) {
   chomp;
 
   my $line = $_;
 
   # if this line eq name: and the line is NOT in the 
   # other map, then this is a new term!
-  if ($line  =~ /^name/ && !exists($terms_hash{$line})) {      
+  if ($line =~ /^name/) {      
       # get rid of prefix to leave only the term name
       my @values = split(' ', $line);
       foreach my $val (@values) {
         if ($val !~ "name:") {
           my $java_name = get_java_type_name($val);
-          $added_term_hash{$java_name} = $val; 
+          $term_hash{$java_name} = $val; 
         }
       }
   }
 }
 
+my $filename = "/local-homes/julie/git/gradle/bio/core/src/main/resources/soClassName.properties";
+
+open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
+
 #print "Done reading in new file\n";
 
-foreach my $name (sort keys %added_term_hash) {
-  print "$name $added_term_hash{$name}\n";
+#say $fh "# Added with InterMine 2.0.0 update\n";
+
+foreach my $name (sort keys %term_hash) {
+  say $fh "$name $term_hash{$name}";
 }
+
+close $fh;
 
 sub get_java_type_name
 {
