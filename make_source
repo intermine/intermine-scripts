@@ -12,6 +12,7 @@ use Cwd qw (cwd getcwd abs_path);
 my $CUSTOM_FILE_TYPE = 'custom-file';
 my $ITEMS_XML_FILE_TYPE = 'intermine-items-xml-file';
 my $LARGE_ITEMS_XML_FILE_TYPE = 'intermine-items-large-xml-file';
+my $FASTA_FILE_TYPE = 'fasta';
 my $GFF_FILE_TYPE = 'gff';
 my $DB_TYPE = 'db';
 my $OBO_TYPE = 'obo';
@@ -34,6 +35,10 @@ my %type_properties = (
 			      project_props_gen => \&gff_props,
 			      create_main => 1,
 			      base_class => 'GFF3RecordHandler' },
+                          $FASTA_FILE_TYPE => { 
+            project_props_gen => \&fasta_props,
+            create_main => 1,
+            base_class => 'FastaConverter' },
                           $DB_TYPE => { 
 			      project_props_gen => \&db_props,
 			      create_main => 1,
@@ -82,6 +87,14 @@ sub custom_file_props
   return <<PROPS;
 have.file.custom.tgt = true
 converter.class = org.intermine.bio.dataconversion.${camel_case_source_name}Converter
+PROPS
+}
+
+sub fasta_props
+{
+  return <<PROPS;
+have.file.custom.direct = true
+loader.class = org.intermine.bio.dataconversion.FastaLoaderTask
 PROPS
 }
 
