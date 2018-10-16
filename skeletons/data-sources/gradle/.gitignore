@@ -1,0 +1,27 @@
+bin/
+dist/
+client-dist/
+build/
+client-build/
+*.log
+*.log.*
+.settings
+.eclipse
+executeLog*
+*.pyc
+*.class
+productionLog
+*~
+
+
+# IDEs
+nbproject/
+nb-build.xml
+.idea/
+apache-tomcat*
+prefixed
+failures.list
+*.jks
+*.iml
+out/
+.gradle/
