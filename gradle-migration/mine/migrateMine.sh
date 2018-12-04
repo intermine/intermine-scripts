@@ -105,10 +105,13 @@ cd $MINE_PATH
   fi
   if [ -d postprocess ]; then
     cd postprocess
-    if [ -d resources ] && [ `ls -A resources` != '.gitignore' ]; then
-      echo "Moving postprocess resources to dbmodel/resources"
-      git mv resources/* ../dbmodel/resources
+    if [ -d resources ]; then
+      if [ `ls -A resources` != '.gitignore' ]; then 
+        echo "Moving postprocess resources to dbmodel/resources"
+        git mv resources/* ../dbmodel/resources
+      fi
     fi
+
     cd ..
     echo "Removing postprocess directory"
     rm -rf postprocess
