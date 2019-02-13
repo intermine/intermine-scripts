@@ -18,7 +18,7 @@ use constant {
     REF_FILE => "all.zip",
 };
 
-use constant ORGANISMS => qw(mouse human caeel drome yeast ecoli bacillus arath);
+use constant ORGANISMS => qw(mouse human drome);
 
 sub BUILD {
     my $self = shift;
