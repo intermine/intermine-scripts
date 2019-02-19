@@ -14,11 +14,11 @@ class SummaryHandler(handler.ContentHandler):
 		self.gene_id = None
 
 	def startElement(self, name, attrs):
-        self.content = ''
+		self.content = ''
 		if name == "Summary":
-        	self.in_summary = True
+        		self.in_summary = True
 		if name == "DocumentSummary":
-        	self.gene_id = attrs["uid"]
+        		self.gene_id = attrs["uid"]
 		
 	def characters(self, content):
 		self.content += content
