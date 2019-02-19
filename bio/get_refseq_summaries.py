@@ -14,9 +14,11 @@ class SummaryHandler(handler.ContentHandler):
 		self.gene_id = None
 
 	def startElement(self, name, attrs):
-		self.content = ''
-		if name == 'Item' and 'Summary' == attrs['Name']:
-			self.in_summary = True
+        self.content = ''
+		if name == "Summary":
+        	self.in_summary = True
+		if name == "DocumentSummary":
+        	self.gene_id = attrs["uid"]
 		
 	def characters(self, content):
 		self.content += content
@@ -24,8 +26,6 @@ class SummaryHandler(handler.ContentHandler):
 	def endElement(self, name):
 		if name == 'DocumentSummary':
 			self.counter += 1
-		if name == 'uid':
-			self.gene_id = self.content
 		if self.in_summary:
 			if len(self.content.strip()) > 0:
 				output.write(self.gene_id + '\t' + self.content + '\n')
