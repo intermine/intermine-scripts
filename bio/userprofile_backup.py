@@ -26,10 +26,6 @@ no_file = "Dump failed, no file created"
 empty_file = "Dump failed, empty backup file"
 db_suffix = args.mine_name
 
-# to deal with non standard name in humanmine
-if db_suffix == "humanmine":
-  db_suffix = "human"
-
 command = "pg_dump -c -h localhost -U " + args.username + " -f " + new_dump_file_name + " userprofile-" + db_suffix
 
 # dump the userprofile
