@@ -7,6 +7,12 @@
 # - remove previous dump if on the same day
 # - save a gzip dump per day
 #
+# usage
+# userprofile_backup.py db_user file_name db_suffix
+#
+# e.g.
+# userprofile_backup.py humanmine mydump humanmine
+#
 
 import argparse, subprocess, time, os, filecmp
 
