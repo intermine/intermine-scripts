@@ -10,10 +10,12 @@ use constant {
     SOURCE_DIR => "interpro/ontology",
     SOURCES => [
         {
-            URI => "http://www.geneontology.org/external2go/interpro2go",
-            FILE => "gene_association.interpro",
+            URI => "ftp://ftp.ebi.ac.uk/pub/databases/interpro/",
+            FILE => "interpro2go",
         },
     ],
 };
 
 1;
+
+

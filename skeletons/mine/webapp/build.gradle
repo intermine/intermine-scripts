@@ -1,5 +1,4 @@
 apply plugin: "war"
-apply from: "https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin"
 apply plugin: "webapp"
 apply plugin: "com.bmuschko.cargo"
 
@@ -51,11 +50,6 @@ task copyWebappContent(type: Copy) {
 // read in mine.properties to get the contextPath
 def props = new Properties()
 file(minePropertyFile).withInputStream { props.load(it) }
-
-gretty {
-    jvmArgs = ['-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true']
-    contextPath = props.getProperty("webapp.path")
-}
 
 webappConfig {
     mineName = "${mineInstanceName}"

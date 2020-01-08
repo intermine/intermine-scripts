@@ -182,7 +182,7 @@ if (exists $opts{a}) {
 
 if ($opts{V}) {
   $release = $opts{V};
-  push @ant_command, "-Drelease=$release"
+  push @ant_command, "-Dorg.gradle.project.release=$release"
 }
 
 if (@ARGV == 2) {
