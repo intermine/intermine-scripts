@@ -10,7 +10,7 @@ use constant {
     SOURCE_DIR => "interpro/ontology",
     SOURCES => [
         {
-            URI => "ftp://ftp.ebi.ac.uk/pub/databases/interpro/",
+            URI => "ftp://ftp.ebi.ac.uk/pub/databases/interpro/current/",
             FILE => "interpro2go",
         },
     ],
