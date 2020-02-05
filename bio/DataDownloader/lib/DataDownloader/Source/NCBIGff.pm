@@ -10,9 +10,9 @@ use constant {
     SOURCE_LINK => "ftp.ncbi.nih.gov",
     SOURCE_DIR => "human/gff",
     SOURCES => [{
-        FILE => "ref_GRCh38.p12_top_level.gff3.gz", 
+        FILE => "GCF_000001405.39_GRCh38.p13_genomic.gff.gz", 
         HOST => "ftp.ncbi.nih.gov",
-        REMOTE_DIR => "genomes/H_sapiens/GFF",
+        REMOTE_DIR => "genomes/H_sapiens/current/GCF_000001405.39_GRCh38.p13",
         EXTRACT => 1,
     }],
 };
