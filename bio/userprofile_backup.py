@@ -14,7 +14,11 @@
 # userprofile_backup.py humanmine mydump humanmine
 #
 
-import argparse, subprocess, time, os, filecmp
+import argparse
+import subprocess
+import time
+import os
+import filecmp
 
 parser = argparse.ArgumentParser()
 parser.add_argument("mine_name")
@@ -25,7 +29,7 @@ format = "%a-%d-%b-%Y-%H:%M:%S"
 t = time.strftime(format)
 d = time.strftime("%a-%d-%b-%Y")
 
-new_dump_file_name = args.dump_file_destination  + "-" + t
+new_dump_file_name = args.dump_file_destination + "-" + t
 current_dump_file_name = args.dump_file_destination
 recipients = "all@intermine.org"
 no_file = "Dump failed, no file created"
@@ -35,19 +39,19 @@ db_suffix = args.mine_name
 command = "pg_dump -c -h localhost -U " + args.username + " -f " + new_dump_file_name + " userprofile-" + db_suffix
 
 # dump the userprofile
-subprocess.call(command,shell=True)
+subprocess.call(command, shell=True)
 
 # if no new dump file -> alarm & exit
 if not os.path.isfile(new_dump_file_name):
-  mailcommand = "echo " + no_file + " | mail -s \"ALERT: userprofile backup for " + args.mine_name + " failed!\" " + recipients
-  subprocess.call(mailcommand, shell=True)
-  exit()
+    mailcommand = "echo " + no_file + " | mail -s \"ALERT: userprofile backup for " + args.mine_name + " failed!\" " + recipients
+    subprocess.call(mailcommand, shell=True)
+    exit()
 
 # if dump has size 0 -> alarm & exit
 if os.path.getsize(new_dump_file_name) == 0:
-  mailcommand = "echo " + empty_file + " | mail -s \"ALERT: userprofile backup for " + args.mine_name + " failed!\" " + recipients
-  subprocess.call(mailcommand, shell=True)
-  exit()
+    mailcommand = "echo " + empty_file + " | mail -s \"ALERT: userprofile backup for " + args.mine_name + " failed!\" " + recipients
+    subprocess.call(mailcommand, shell=True)
+    exit()
 
 previous_dump = os.path.realpath(current_dump_file_name)
 
@@ -60,8 +64,8 @@ else:
     # new symlink if different
     os.symlink(new_dump_file_name, current_dump_file_name)
     if d in previous_dump:
-      # same day, just remove
-      os.remove(previous_dump)
+        # same day, just remove
+        os.remove(previous_dump)
     else:
-      # keep one for the day before, and gzip it
-      subprocess.check_call(['gzip', previous_dump])
+        # keep one for the day before, and gzip it
+        subprocess.check_call(['gzip', previous_dump])
