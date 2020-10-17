@@ -53,6 +53,25 @@ sub _build_logger {
     return make_logger();
 }
 
+has compare_to_existing => (
+    init_arg => 'COMPARE',
+    is => 'ro', 
+    isa => 'Bool',
+    lazy_build => 1,
+    reader => 'compare_to_existing_version',
+);
+
+sub _build_compare_to_existing {
+    my $self = shift;
+    my $current_dir = $self->get_source_dir->subdir("current");
+
+    if ($self->compare_to_existing_version) {
+        if ($self->is_same_as($current_dir)) {
+            $self->info("Can't Download data for " . $self->get_title . " because it already exists in the current directory - skipping");
+        }
+    }
+}
+
 sub log_start {
     my $self = shift;
     $self->info("Starting data download for " . $self->get_title);
