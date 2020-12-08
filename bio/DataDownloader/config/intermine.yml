@@ -1,4 +1,4 @@
-log_dir: "/tmp"
+log_dir: "/micklem/data/flymine/download-logs"
 data_dir: "/micklem/data"
 
 default_sources:
