@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import sys
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 from xml.sax import make_parser, handler
 import time
 
@@ -34,7 +34,7 @@ class SummaryHandler(handler.ContentHandler):
             self.gene_id = None
 
     def endDocument(self):
-        print("fetched info for genes: ", self.counter)
+        print(("fetched info for genes: ", self.counter))
 
 
 def read_gene_ids(gene_info_filename):
@@ -45,7 +45,7 @@ def read_gene_ids(gene_info_filename):
 
     # entrez gene id is second column of file
     gene_ids = [line.split()[1] for line in gene_info]
-    gene_ids = filter(lambda name: name.isdigit(), gene_ids)
+    gene_ids = [name for name in gene_ids if name.isdigit()]
     return gene_ids
 
 
@@ -64,20 +64,20 @@ def fetch_summary(gene_ids, parser, output):
     id_string = ",".join(gene_ids)
     url = esummary_url + id_string
 
-    print('Fetching:', url)
-    parser.parse(urllib2.urlopen(url))
+    print(('Fetching:', url))
+    parser.parse(urllib.request.urlopen(url))
 
 
 if len(sys.argv) != 3:
     print("Usage:")
-    print("    ", sys.argv[0], "gene_info_file output_file")
+    print(("    ", sys.argv[0], "gene_info_file output_file"))
     print("For example:")
-    print("    ", sys.argv[0], "/DATA/gene_info_file /DATA/gene_summaries")
+    print(("    ", sys.argv[0], "/DATA/gene_info_file /DATA/gene_summaries"))
     exit(1)
 
 gene_info_filename = sys.argv[1]
 gene_ids = read_gene_ids(gene_info_filename)
-print('genes from gene_info file: ', len(gene_ids))
+print(('genes from gene_info file: ', len(gene_ids)))
 
 output = open(sys.argv[2], 'w')
 fetch_summaries(gene_ids, output, 400)
