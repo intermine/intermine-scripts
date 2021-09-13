@@ -3,10 +3,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.Copy
 buildscript {
     repositories {
         mavenLocal()
-        jcenter()
-        maven {
-            url "https://oss.jfrog.org/artifactory/oss-snapshot-local"
-        }
+        mavenCentral()
     }
     dependencies {
         classpath group: 'org.intermine', name: 'plugin', version: System.getProperty("imVersion")
@@ -21,7 +18,7 @@ ext {
 
 subprojects {
     group = 'org.intermine'
-    version = '4.1.1'
+    version = '5.0.0'
 
     apply plugin: 'java'
     apply plugin: 'maven'
@@ -33,10 +30,7 @@ subprojects {
 
     repositories {
         mavenLocal()
-        jcenter()
-        maven {
-            url "https://oss.jfrog.org/artifactory/oss-snapshot-local"
-        }
+        mavenCentral()
     }
 
     configurations {

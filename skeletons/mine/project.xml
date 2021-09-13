@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <project type="bio">
   <property name="target.model" value="genomic"/>
   <property name="common.os.prefix" value="common"/>
