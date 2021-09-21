@@ -42,6 +42,7 @@ default_sources:
 UniProt:
     organisms:
         - 3702
+        - 4896
         - 6239
         - 7165
         - 7217
