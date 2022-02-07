@@ -15,7 +15,7 @@ use constant {
         {
             SUBTITLE => 'UniProt',
             HOST => "ftp.uniprot.org",
-            REMOTE_DIR => "pub/databases/uniprot/knowledgebase/docs",
+            REMOTE_DIR => "pub/databases/uniprot/current_release/knowledgebase/complete/docs",
             FILE => "dbxref.txt",
             EXTRACT => 0,
         },
