@@ -28,7 +28,7 @@ sub BUILD {
 
     $self->set_sources([
         {
-            SERVER => 'https://downloads.thebiogrid.org/BioGRID/Release-Archive/BIOGRID-' . $version,
+            SERVER => 'https://downloads.thebiogrid.org/Download/BioGRID/Release-Archive/BIOGRID-' . $version,
             FILE => 'BIOGRID-ORGANISM-' . $version . '.psi25.zip',
 
             CLEANER => sub {
