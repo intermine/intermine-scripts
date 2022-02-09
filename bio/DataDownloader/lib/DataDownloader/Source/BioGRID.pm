@@ -16,7 +16,7 @@ use constant ORGANISMS => (
     "Caenorhabditis_elegans", 
     "Mus_musculus",
     "Homo_sapiens",
-    "Saccharomyces_cerevisiae_S288c"
+    "Saccharomyces_cerevisiae_S288c",
     "Schizosaccharomyces_pombe"
 );
 
