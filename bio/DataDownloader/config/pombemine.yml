@@ -9,5 +9,6 @@ default_sources:
   - "pombe-phenotype"
   - "pombe-fasta"
   - "mondo"
+  - "mondo-ontology"
   - "fypo-extension"
   - "fypo"
