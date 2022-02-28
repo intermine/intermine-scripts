@@ -1,0 +1,13 @@
+log_dir: "/micklem/data/pombemine/download-logs"
+data_dir: "/micklem/data/pombemine"
+
+default_sources:
+  - "pombe-gene"
+  - "pombe-go-annotation"
+  - "pombe-human-orthologs"
+  - "pombe-cerevisiae-orthologs"
+  - "pombe-phenotype"
+  - "pombe-fasta"
+  - "mondo"
+  - "fypo-extension"
+  - "fypo"
