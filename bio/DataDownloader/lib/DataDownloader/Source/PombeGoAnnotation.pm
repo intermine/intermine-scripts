@@ -1,4 +1,4 @@
-package DataDownloader::Source::pombe-go-annotation;
+package DataDownloader::Source::PombeGoAnnotation;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';

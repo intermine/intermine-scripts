@@ -1,4 +1,4 @@
-package DataDownloader::Source::pombe-human-orthologs;
+package DataDownloader::Source::PombeHumanOrthologs;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';

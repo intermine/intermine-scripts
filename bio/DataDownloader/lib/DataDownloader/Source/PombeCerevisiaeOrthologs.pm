@@ -1,4 +1,4 @@
-package DataDownloader::Source::pombe-cerevisae-orthologs;
+package DataDownloader::Source::PombeCerevisaeOrthologs;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';

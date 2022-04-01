@@ -1,4 +1,4 @@
-package DataDownloader::Source::pombe-phenotype;
+package DataDownloader::Source::PombePhenotype;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';

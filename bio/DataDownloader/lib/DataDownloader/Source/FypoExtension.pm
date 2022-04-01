@@ -1,4 +1,4 @@
-package DataDownloader::Source::fypo-extension;
+package DataDownloader::Source::FypoExtension;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';

@@ -1,4 +1,4 @@
-package DataDownloader::Source::pombe-fasta;
+package DataDownloader::Source::PombeFasta;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';

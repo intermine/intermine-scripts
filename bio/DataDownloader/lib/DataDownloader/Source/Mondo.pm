@@ -1,4 +1,4 @@
-package DataDownloader::Source::mondo;
+package DataDownloader::Source::Mondo;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';

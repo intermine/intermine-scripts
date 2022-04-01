@@ -1,4 +1,4 @@
-package DataDownloader::Source::mondo-ontology;
+package DataDownloader::Source::MondoOntology;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';

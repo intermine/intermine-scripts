@@ -1,4 +1,4 @@
-package DataDownloader::Source::pombe-gene;
+package DataDownloader::Source::PombeGene;
 
 use Moose;
 extends 'DataDownloader::Source::ABC';
