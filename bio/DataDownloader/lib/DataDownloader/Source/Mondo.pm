@@ -13,7 +13,7 @@ use constant {
         "Mondo disease anotation",
     SOURCE_LINK => 
         "https://curation.pombase.org/",
-    SOURCE_DIR => "dumps/latest_build/misc",
+    SOURCE_DIR => "pombemine/disease",
     SOURCES => [{
         FILE   => 'disease_association.tsv',
         SERVER => 'https://curation.pombase.org/dumps/latest_build/misc/',
