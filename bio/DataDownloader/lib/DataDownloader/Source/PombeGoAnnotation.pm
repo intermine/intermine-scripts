@@ -13,11 +13,11 @@ use constant {
         "Gene Ontology anotation",
     SOURCE_LINK => 
         "https://curation.pombase.org/",
-    SOURCE_DIR => "dumps/latest_build/",
+    SOURCE_DIR => "pombemine/pombe-go-annotation",
     SOURCES => [{
         FILE   => 'pombase-latest.gaf.gz',
         SERVER => 'https://curation.pombase.org/dumps/latest_build/',
-	EXTRACT => 1,
+		EXTRACT => 1,
     }],
 };
 
