@@ -8,15 +8,15 @@ extends 'DataDownloader::Source::ABC';
 
 use constant {
     TITLE       => 
-        'mondo ontology',
+        'Mondo Ontology',
     DESCRIPTION => 
-        "mondo ontology",
+        "Mondo Ontology",
     SOURCE_LINK => 
         "http://purl.obolibrary.org/",
-    SOURCE_DIR => "obo",
+    SOURCE_DIR => "pombemine/mondo",
     SOURCES => [{
         FILE   => 'mondo.obo',
-        SERVER => 'http://purl.obolibrary.org/obo/mondo.obo',
+        SERVER => 'http://purl.obolibrary.org/obo',
                 },
 
         ],
