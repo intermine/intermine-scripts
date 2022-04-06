@@ -13,10 +13,10 @@ use constant {
         "Alleles and phenotypes",
     SOURCE_LINK => 
         "https://www.pombase.org/",
-    SOURCE_DIR => "downloads/phenotype-annotations",
+    SOURCE_DIR => "pombemine/phenotypes",
     SOURCES => [{
         FILE   => 'phenotype_annotations.pombase.phaf.gz',
-        SERVER => 'https://www.pombase.org/downloads/phenotype-annotations',
+        SERVER => 'https://www.pombase.org/data/annotations/Phenotype_annotations',
 	EXTRACT => 1,
     }],
 };
