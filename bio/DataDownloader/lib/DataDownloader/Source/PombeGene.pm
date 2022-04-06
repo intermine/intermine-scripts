@@ -13,7 +13,7 @@ use constant {
         "Pombe gene details",
     SOURCE_LINK => 
         "https://curation.pombase.org/",
-    SOURCE_DIR => "dumps/latest_build/intermine_data",
+    SOURCE_DIR => "pombemine/gene_data",
     SOURCES => [{
         FILE   => 'pombemine_gene_details.gz',
         SERVER => 'https://curation.pombase.org/dumps/latest_build/intermine_data/',
