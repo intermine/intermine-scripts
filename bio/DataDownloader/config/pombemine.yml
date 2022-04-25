@@ -18,7 +18,7 @@ default_sources:
 #  - "InterPro"
 #  - "InterProGO"
 #  - "InterProProtein"
-  - "NCBIGene"
+#  - "NCBIGene"
 #  - "OMIM"
 #  - "Panther"
 #  - "UniProt"
