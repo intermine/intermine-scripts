@@ -1,5 +1,5 @@
 log_dir: "/micklem/data/pombemine/download-logs"
-data_dir: "/micklem/data/pombemine"
+data_dir: "/micklem/data"
 
 # commented out datasource used by PombeMine which are not update automatically
 default_sources:
