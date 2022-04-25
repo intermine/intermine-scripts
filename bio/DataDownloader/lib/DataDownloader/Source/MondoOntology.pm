@@ -13,7 +13,7 @@ use constant {
         "Mondo Ontology",
     SOURCE_LINK => 
         "http://purl.obolibrary.org/",
-    SOURCE_DIR => "pombemine/mondo",
+    SOURCE_DIR => "mondo",
     SOURCES => [{
         FILE   => 'mondo.obo',
         SERVER => 'http://purl.obolibrary.org/obo',
